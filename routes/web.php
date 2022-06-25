@@ -22,6 +22,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-Route::get('/tarefa/nova' , [TaskController::class, 'create'])->middleware(['auth']);
+Route::get('/tarefa/nova' , [TaskController::class, 'create'])->middleware(['auth'])->name('tarefa');
+Route::post('/tarefa/add' , [TaskController::class, 'store'])->middleware(['auth'])->name('criarTarefa');
 
 require __DIR__.'/auth.php';
