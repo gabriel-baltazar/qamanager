@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class TaskController extends Controller
+class DashboardController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,10 +15,8 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::all();
-        $users = User::all()->pluck('name', 'id')->toArray();
-        return view('tasks.index', compact('tasks', 'users'));
-        
+        $task = Task::all()->count();
+        return view('dashboard', compact('task'));
     }
 
     /**
@@ -29,8 +26,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        $users = User::all();
-        return view('tasks.create', compact('users'));
+        //
     }
 
     /**
@@ -41,9 +37,7 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $Task = new Task();
-        $Task->create($request->all());
-        return redirect()->route('listaTarefas');
+        //
     }
 
     /**
@@ -65,9 +59,7 @@ class TaskController extends Controller
      */
     public function edit($id)
     {
-        $task = Task::findOrFail($id);
-        $users = User::all();
-        return view('tasks.edit', compact('task', 'users'));
+        //
     }
 
     /**
@@ -79,10 +71,7 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $Task = Task::findOrFail($id);
-        $Task->update($request->all());
-
-        return redirect()->route('listaTarefas');
+        //
     }
 
     /**
