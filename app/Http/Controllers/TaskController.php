@@ -93,6 +93,8 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $Task = Task::findOrFail($id);
+        $Task->delete();
+        return redirect()->route('listaTarefas');
     }
 }
