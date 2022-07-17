@@ -2,7 +2,9 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TaskController;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,22 +18,16 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return Inertia::render('Welcome', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
 });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth'])->name('dashboard');
+Route::resource('dashboard', DashboardController::class)->middleware(['auth', 'verified'])->name('*','dashboard');
 
-Route::get('/dashboard' , [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
-
-// Tasks
-Route::get('/tarefa/nova' , [TaskController::class, 'create'])->middleware(['auth'])->name('tarefa');
-Route::get('/tarefa/index' , [TaskController::class, 'index'])->middleware(['auth'])->name('listaTarefas');
-Route::get('/tarefa/{id}' , [TaskController::class, 'edit'])->middleware(['auth'])->name('editarTarefa');
-Route::post('/tarefa/add' , [TaskController::class, 'store'])->middleware(['auth'])->name('criarTarefa');
-Route::put('/tarefa/update/{id}' , [TaskController::class, 'update'])->middleware(['auth'])->name('updateTarefa');
-Route::delete('/tarefa/{id}' , [TaskController::class, 'destroy'])->middleware(['auth'])->name('deleteTarefa');
-
+Route::resource('tasks', TaskController::class)->middleware(['auth', 'verified'])->name('*', 'tasks');
 
 require __DIR__.'/auth.php';

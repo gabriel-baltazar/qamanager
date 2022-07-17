@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class TaskController extends Controller
 {
@@ -18,7 +19,7 @@ class TaskController extends Controller
     {
         $tasks = Task::all();
         $users = User::all()->pluck('name', 'id')->toArray();
-        return view('tasks.index', compact('tasks', 'users'));
+        return Inertia::render('tasks/Index',['tasks' => $tasks, 'users' => $users]);
         
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class DashboardController extends Controller
 {
@@ -16,7 +17,7 @@ class DashboardController extends Controller
     public function index()
     {
         $task = Task::all()->count();
-        return view('dashboard', compact('task'));
+        return Inertia::render('Dashboard', ['task' => $task]);
     }
 
     /**
