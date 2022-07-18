@@ -6,6 +6,7 @@ use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
 class TaskController extends Controller
@@ -31,7 +32,7 @@ class TaskController extends Controller
     public function create()
     {
         $users = User::all();
-        return view('tasks.create', compact('users'));
+        return Inertia::render('tasks/Create',['users' => $users]);
     }
 
     /**
@@ -44,7 +45,7 @@ class TaskController extends Controller
     {
         $Task = new Task();
         $Task->create($request->all());
-        return redirect()->route('listaTarefas');
+        return Redirect::route('tasks.index');
     }
 
     /**
@@ -68,7 +69,7 @@ class TaskController extends Controller
     {
         $task = Task::findOrFail($id);
         $users = User::all();
-        return view('tasks.edit', compact('task', 'users'));
+        return Inertia::render('tasks/Edit',['task'=> $task,'users' => $users]);
     }
 
     /**
@@ -80,10 +81,10 @@ class TaskController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $Task = Task::findOrFail($id);
-        $Task->update($request->all());
+        $task = Task::findOrFail($id);
+        $task->update($request->all());
 
-        return redirect()->route('listaTarefas');
+        return Redirect::route('tasks.index');
     }
 
     /**
@@ -94,8 +95,8 @@ class TaskController extends Controller
      */
     public function destroy($id)
     {
-        $Task = Task::findOrFail($id);
-        $Task->delete();
-        return redirect()->route('listaTarefas');
+        $task = Task::findOrFail($id);
+        $task->delete();
+        return Redirect::route('tasks.index');
     }
 }

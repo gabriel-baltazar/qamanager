@@ -1,6 +1,6 @@
 <script setup>
-  import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
-  import { Head } from '@inertiajs/inertia-vue3';
+  import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue'
+  import { Head } from '@inertiajs/inertia-vue3'
 </script>
 <template>
     <Head title="Tarefas" />
@@ -14,7 +14,7 @@
     
         <div class="py-12">
     <div class="max-w-7xl mb-10 mx-auto sm:px-6 lg:px-8">
-      <a class="text-white  bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-bold rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" href="{{url('tarefa/nova')}}">Nova Tarefa</a>
+      <Link class="text-white  bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-bold rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" :href="route('tasks.create')">Nova Tarefa</Link>
     </div>
 
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -61,18 +61,19 @@
                   {{task.status}}
                 </td>
                 <td class="px-6 py-4">
-                  <!-- {{users[task.user_id]}} -->
+                  {{users[task.user_id]}}
                 </td>
                 <td class="px-6 py-4 text-right">
-                  <!-- {{route('editarTarefa', task.id)}} -->
-                  <Link href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <Link :href="route('tasks.edit',[task.id])" class="font-medium text-blue-600 dark:text-blue-500 hover:underline"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                    </svg></Link>
+                    </svg>
+                  </Link>
                 </td>
                 <td class="px-6 py-4 text-right">
-                  <a id='taskDelete' data-modal-toggle="popup-modal" class="font-medium text-red-400 dark:text-red-500 hover:underline"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <a id='taskDelete' @click="getIdTask(task.id)" data-modal-toggle="popup-modal" class="font-medium text-red-400 dark:text-red-500 hover:underline cursor-pointer"><svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                    </svg></a>
+                    </svg>
+                  </a>
                   <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 md:inset-0 h-modal md:h-full justify-center items-center" aria-hidden="true">
                     <div class="relative p-4 w-full max-w-md h-full md:h-auto">
                       <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
@@ -86,14 +87,10 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                           </svg>
                           <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Tem certeza de que deseja excluir esta tarefa ?</h3>
-                          <!-- <form action="/tarefa/{{task.id}}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" data-modal-toggle="popup-modal" class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-bold rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                            <button @click="destroy" type="button" data-modal-toggle="popup-modal" class="text-white bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-bold rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
                               Sim, Gostaria
                             </button>
                             <button data-modal-toggle="popup-modal" type="button" class="text-white bg-red-400 hover:bg-red-100 focus:ring-4 focus:outline-none focus:ring-red-200 rounded-lg border border-red-200 text-sm font-bold px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-red-700 dark:text-red-300 dark:border-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-600">Não, Cancelar</button>
-                          </form> -->
                           </div>
                       </div>
                     </div>
@@ -110,11 +107,23 @@
 </template>
 
 <script>
-export default {
-  props:{
-    tasks: Object,
-    users: Array
-
+  export default {
+    props:{
+      tasks: Object,
+      users: Object
+    },
+    data() {
+      return {
+        idTask: null
+      }
+    },
+    methods: {
+      getIdTask(id) {
+        this.idTask = id
+      },
+      destroy(){
+        this.$inertia.delete(`/tasks/${this.idTask}`)
+      }
+    },
   }
-}
 </script>

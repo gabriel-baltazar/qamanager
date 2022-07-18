@@ -1,8 +1,7 @@
 <script setup>
-import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
-import { Head } from '@inertiajs/inertia-vue3';
+  import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue'
+  import { Head } from '@inertiajs/inertia-vue3'
 </script>
-
 <template>
     <Head title="Dashboard" />
 
@@ -31,9 +30,9 @@ import { Head } from '@inertiajs/inertia-vue3';
 </template>
 
 <script>
-export default {
-  props:{
-    task: Number,
-  }
-}
+	export default {
+		props:{
+				task: Number,
+		}
+	}
 </script>
